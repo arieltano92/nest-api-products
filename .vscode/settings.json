@@ -1,0 +1,12 @@
+{
+    "prettier.configPath": ".prettierrc",
+    "[typescript]": {
+        "editor.defaultFormatter":"rvest.vs-code-prettier-eslint",
+    },
+    "editor.codeActionsOnSave": {
+
+
+      "source.fixAll.ts": "always"
+    },
+    "editor.formatOnSave": true
+}
