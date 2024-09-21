@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './../../entities/product.entity';
+import { createProductDto } from 'src/dtos/products.dto';
+
 @Injectable()
 export class ProductsService {
   private counterId = 1;
@@ -19,10 +21,12 @@ export class ProductsService {
   }
 
   findOne(id): Product {
-    return this.products.find((item) => item.id === Number(id));
+    const product: Product = this.products.find((item) => item.id === id);
+    if (!product) throw new NotFoundException('Product doesnt exist!');
+    return product;
   }
 
-  create(payload: any) {
+  create(payload: createProductDto) {
     this.counterId += 1;
     const newProduct: Product = {
       id: this.counterId,
@@ -34,21 +38,21 @@ export class ProductsService {
 
   update(id, payload) {
     const product: Product = this.findOne(id);
-    if (product) {
-      const productIndex: number = this.products.findIndex(
-        (item) => item.id === Number(id),
-      );
-      const updatedProduct: Product = { ...product, ...payload };
-      this.products[productIndex] = updatedProduct;
-      return updatedProduct;
-    }
-    return null;
+    if (!product) throw new NotFoundException('Product doesnt exist!');
+    const productIndex: number = this.products.findIndex(
+      (item) => item.id === id,
+    );
+    const updatedProduct: Product = { ...product, ...payload };
+    this.products[productIndex] = updatedProduct;
+    return updatedProduct;
   }
 
   delete(id) {
     const productIndex: number = this.products.findIndex(
       (item) => item.id === Number(id),
     );
-    productIndex >= 0 && delete this.products[productIndex];
+    if (productIndex === -1)
+      throw new NotFoundException('Product doesnt exist!');
+    this.products.splice(productIndex, 1);
   }
 }

@@ -9,8 +9,10 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ProductsService } from '../../services/products/products.service';
+import { createProductDto, updateProductDto } from 'src/dtos/products.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -26,29 +28,32 @@ export class ProductsController {
     return this.productsService.findAll();
   }
 
-  @Get(':productId')
+  @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getProduct(@Param('productId') productId: number): any {
-    return this.productsService.findOne(productId);
+  getProduct(@Param('id', ParseIntPipe) id: number): any {
+    return this.productsService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createProduct(@Body() payload: any): any {
+  createProduct(@Body() payload: createProductDto): any {
     console.log('Creating product', payload);
     return this.productsService.create(payload);
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateProduct(@Param('id') id: string, @Body() payload: any): any {
+  updateProduct(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: updateProductDto,
+  ): any {
     console.log(`Updating product ${id}`, payload);
     return this.productsService.update(id, payload);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  deleteProduct(@Param('id') id: string): any {
+  deleteProduct(@Param('id', ParseIntPipe) id: number): any {
     console.log(`Deleting product ${id}`);
     this.productsService.delete(id);
     return {
