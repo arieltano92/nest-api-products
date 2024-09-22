@@ -11,8 +11,11 @@ import {
   HttpStatus,
   ParseIntPipe,
 } from '@nestjs/common';
-import { ProductsService } from '../../services/products/products.service';
-import { createProductDto, updateProductDto } from 'src/dtos/products.dto';
+import { ProductsService } from '../services/products.service';
+import {
+  createProductDto,
+  updateProductDto,
+} from 'src/products/dtos/products.dto';
 
 @Controller('products')
 export class ProductsController {
