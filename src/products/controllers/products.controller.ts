@@ -24,7 +24,7 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  @ApiOperation({summary: 'Get products'})
+  @ApiOperation({ summary: 'Get products' })
   @HttpCode(HttpStatus.OK)
   getProducts(
     @Query('limit') limit: number = 100,
@@ -35,14 +35,14 @@ export class ProductsController {
   }
 
   @Get(':id')
-  @ApiOperation({summary: 'Get product by id'})
+  @ApiOperation({ summary: 'Get product by id' })
   @HttpCode(HttpStatus.OK)
   getProduct(@Param('id', ParseIntPipe) id: number): any {
     return this.productsService.findOne(id);
   }
 
   @Post()
-  @ApiOperation({summary: 'Create product'})
+  @ApiOperation({ summary: 'Create product' })
   @HttpCode(HttpStatus.CREATED)
   createProduct(@Body() payload: createProductDto): any {
     console.log('Creating product', payload);
@@ -50,7 +50,7 @@ export class ProductsController {
   }
 
   @Put(':id')
-  @ApiOperation({summary: 'Update product'})
+  @ApiOperation({ summary: 'Update product' })
   @HttpCode(HttpStatus.OK)
   updateProduct(
     @Param('id', ParseIntPipe) id: number,
@@ -61,7 +61,7 @@ export class ProductsController {
   }
 
   @Delete(':id')
-  @ApiOperation({summary: 'Delete product'})
+  @ApiOperation({ summary: 'Delete product' })
   @HttpCode(HttpStatus.OK)
   deleteProduct(@Param('id', ParseIntPipe) id: number): any {
     console.log(`Deleting product ${id}`);
